@@ -234,12 +234,12 @@ public class GrafoMatriz<T extends Comparable<T>> {
         }
         vertices.remove(index);
         counter = 0;
+        matrix.remove(index);
         for(ArrayList<Integer> list : matrix){
             list.remove(index);
             //no le quita a todas las listas sus valores, no entiendo porque?
-            if(counter == index){
-                matrix.remove(index);
-            }
+            //hmm lio. Borra lista de la mitad, y entonces luego para eso el ya
+            // paso por todas listas entonces no le borra a una
 
             //asi pareceria que no lo guarda asi en la matriz
             //pero entonces como?
