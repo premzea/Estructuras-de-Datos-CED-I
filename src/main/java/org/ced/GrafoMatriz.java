@@ -1,5 +1,7 @@
 package org.ced;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 // hay que hacer un objeto arista?
 
 public class GrafoMatriz<T extends Comparable<T>> {
@@ -7,6 +9,10 @@ public class GrafoMatriz<T extends Comparable<T>> {
     private static class VerticeMatriz<T extends Comparable<T>>{
         public T data;
         public COLORS color;
+        public VerticeMatriz<T> father;
+        //para BFS y DFS
+        public Integer distance;
+        //MOstly for BFS pero tambien for DFS
 
         //no sense assigng it a key, to my thinking
         public VerticeMatriz(T data) {
@@ -18,11 +24,8 @@ public class GrafoMatriz<T extends Comparable<T>> {
             this.color = color;
         }
 
-        //     @Override
-        //     public int compareTo(T o) {
-        //         // TODO Auto-generated method stub
-        //         throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
-        //     }
+
+// tengo que sacarlas y hacer nuevos archivos para evitar acoplamiento
 
     }
     //arista vacia == 0
@@ -331,13 +334,6 @@ public class GrafoMatriz<T extends Comparable<T>> {
         }
     }
 
-    public void DFS(T data){
-        for(VerticeMatriz<T> node : vertices){
-            node.color(COLORS.WHITE);
-
-        }
-    }
-
     public int getSize(){
         return vertices.size();
     }
@@ -372,6 +368,99 @@ public class GrafoMatriz<T extends Comparable<T>> {
         return neigh;
     }
 
-    //get neighbors way harder. Obviemolo. Hagamonos los bobos. O mentira solo ciclos basicamente y ya
+    public  ArrayList<VerticeMatriz<T>> getNeighborsA(T data){
+        VerticeMatriz<T> node = findNode(data) != -1 ? vertices.get(findNode(data)) : null;
+        ArrayList<VerticeMatriz<T>> neighbors = new ArrayList<>();
+        if(node != null){
+            int counter = 0;
+            for(Integer n : matrix.get(findNode(data))){
+                if(n != 0){
+                    neighbors.add(vertices.get(counter));
+                }
+                counter ++;
+            }
 
+        }
+
+        return neighbors;
+    }
+
+    //get neighbors way harder. Obviemolo. Hagamonos los bobos. O mentira solo ciclos basicamente y ya. Ya hecho
+
+    //DFS funciones son voids y BFS creo
+    //que tambien. Simplemente se crea un nodo me imagino y con ese luego
+    // toda la estructura
+    //Pero como bosques bro?
+
+    public void DFSVisit(VerticeMatriz<T> node){
+        node.color = COLORS.GRAY;
+        if(!getNeighborsA(node.data).isEmpty()){
+            for(VerticeMatriz<T> nodeChild : getNeighborsA(node.data)){
+                if(nodeChild.color == COLORS.WHITE){
+                    nodeChild.father = node;
+                    DFSVisit(nodeChild);
+                }
+            }
+            node.color = COLORS.BLACK;
+            //todavia no tiene implementado porque andresito dijo que no
+        }
+        //pero entonces lo detengo cuando lo encuentra o que?
+        // Ese es el punto o que?
+        //son voids porque a partir de los rpedesesores de los nodos se
+        // puede reconstruir
+        //si el proposito es solo encontrar un nodo, y su conectividad en el
+        // grafo, entonces si se pone condicion de parar.
+        //Si objetivo por ejemplo, optimizacion, entonces es mejor
+        // buscar en todo el grafo
+    }
+
+    public void DFS(T data) {
+        //aun que tambien duda, como se escoge como el nodo raiz per say?
+        //Solo va a ser el que esta de primero en lista vertices?
+        //se esta buscando el data
+        if (findNode(data) != -1) {
+            for (VerticeMatriz<T> node : vertices) {
+                //segun esto aja
+                node.color(COLORS.WHITE);
+                node.father = null;
+            }
+            for (VerticeMatriz<T> node : vertices) {
+                if (node.color.equals(COLORS.WHITE)) {
+                    DFSVisit(node);
+                }
+            }
+
+        }
+    }
+
+    //importante revisar antes de algoritmos de busqueda si coso si
+    // quiera existe
+
+    public void BFS(T data){
+        //(nodo de Data es S de pseudocodigo. Todo cobra sentido)
+        //creo un queue para este, donde voy poniendo
+        // los adjacents para que haya un orden ordenado de como revisar nodos
+        if(findNode(data) != -1){
+            VerticeMatriz<T> entry = vertices.get(findNode(data));
+            // como decido en cual empezar?
+            //uh? Esto queue?
+            entry.color = COLORS.GRAY;
+            entry.father = null;
+            Queue<T> queue = new LinkedList<>();
+            for(VerticeMatriz<T> node : vertices){
+                if(entry.data.compareTo(data) != 0){
+                    node.color = COLORS.WHITE;
+                    node.father = null;
+                }
+                //distance infinito, porque era?
+            }
+            queue.add(data);
+            while(!queue.isEmpty()){
+                VerticeMatriz<T> node = queue.poll();
+
+            }
+
+        }
+    }
+// asegurarte de que solo reciba valores unicos broooo
 }
