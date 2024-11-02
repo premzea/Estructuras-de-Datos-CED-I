@@ -166,4 +166,22 @@ public class GrafoLista<T>{
         return value;
         //si uno de los nodos no esta no hace nada
     }
+
+    public  ArrayList<T> getNeighbors(T data){
+        ArrayList<VerticeLista<T>> neighbors = new ArrayList<>();
+        VerticeLista<T> node = findNode(data) != -1 ? list.get(findNode(data)) : null;
+        if(node != null){
+            neighbors = node.vList;
+        }
+
+        ArrayList<T> neigh = new ArrayList<>();
+        for(VerticeLista<T> n : neighbors){
+            neigh.add(n.data);
+        }
+        return neigh;
+    }
+
+    public void DFS(){
+
+    }
 }

@@ -331,15 +331,15 @@ public class GrafoMatriz<T extends Comparable<T>> {
         }
     }
 
-    public int getSize(){
-        return vertices.size();
-    }
-
     public void DFS(T data){
         for(VerticeMatriz<T> node : vertices){
             node.color(COLORS.WHITE);
 
         }
+    }
+
+    public int getSize(){
+        return vertices.size();
     }
 
     public ArrayList<T> getVertices(){
@@ -348,6 +348,28 @@ public class GrafoMatriz<T extends Comparable<T>> {
             data.add(node.data);
         }
         return data;
+    }
+
+    //tan gvn puedo usar findNode para los indices en vez de hacer un for loop, tan tierna
+
+    public  ArrayList<T> getNeighbors(T data){
+        ArrayList<T> neigh = new ArrayList<>();
+        VerticeMatriz<T> node = findNode(data) != -1 ? vertices.get(findNode(data)) : null;
+        if(node != null){
+            ArrayList<VerticeMatriz<T>> neighbors = new ArrayList<>();
+            int counter = 0;
+            for(Integer n : matrix.get(findNode(data))){
+                if(n != 0){
+                    neighbors.add(vertices.get(counter));
+                }
+                counter ++;
+            }
+            for(VerticeMatriz<T> n : neighbors){
+                neigh.add(n.data);
+            }
+        }
+
+        return neigh;
     }
 
     //get neighbors way harder. Obviemolo. Hagamonos los bobos. O mentira solo ciclos basicamente y ya

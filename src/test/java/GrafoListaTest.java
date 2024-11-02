@@ -3,6 +3,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -35,19 +37,19 @@ public class GrafoListaTest {
         // assertEquals(List.of(2), grafo.getNeighbors(1));
     }
 
-    // @Test
-    // void testGetNeighbors() {
-    //     grafo.insertV(1);
-    //     grafo.insertV(2);
-    //     grafo.insertV(3);
-    //     grafo.insertA(1, 2);
-    //     grafo.insertA(1, 3);
+    @Test
+    void testGetNeighbors() {
+         grafo.insertV(1);
+         grafo.insertV(2);
+         grafo.insertV(3);
+         grafo.insertA(1, 2, 1);
+         grafo.insertA(1, 3, 1);
 
-    //     List<Integer> neighbors = grafo.getNeighbors(1);
-    //     assertEquals(2, neighbors.size());
-    //     assertTrue(neighbors.contains(2));
-    //     assertTrue(neighbors.contains(3));
-    // }
+         ArrayList<Integer> neighbors = grafo.getNeighbors(1);
+         assertEquals(2, neighbors.size());
+         assertTrue(neighbors.contains(2));
+         assertTrue(neighbors.contains(3));
+    }
 
     @Test
     void testRemoveEdge() {
